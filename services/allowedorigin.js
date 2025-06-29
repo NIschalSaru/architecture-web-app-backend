@@ -20,7 +20,7 @@ const allowOrigin = {
     "https://nepaldesignersandbuilders.netlify.app",
     "https://nd-nb.netlify.app",
     "https://ndnb-uat.netlify.app",
-    "http://stg.ndnb.com.np",
+    "https://stg.ndnb.com.np",
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
