@@ -16,3 +16,4 @@ build/
 
 # Custom storage folder
 storage/
+tmp/
