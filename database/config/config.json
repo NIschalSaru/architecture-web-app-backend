@@ -12,16 +12,6 @@
       }
     }
   },
-  "test": {
-    "username": "demo_ndnbcomn_testdbuser",
-    "password": "g3.)r90{*l0K",
-    "database": "demo_ndnbcomn_testdb",
-    "host": "127.0.0.1",
-    "port": 5432,
-    "dialect": "postgres",
-    "dialectOptions": {},
-    "logging": false
-  },
   "production": {
     "username": "ndnbcomn_testdbuser",
     "password": "g3.)r90{*l0K",

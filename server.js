@@ -17,6 +17,10 @@ app.use(cookieParser());
 app.use("/api/architecture-web-app/uploads", express.static("storage/uploads"));
 app.use("/api/architecture-web-app", mainRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Backend is running ✅");
+});
+
 sequelizeInstance
   .authenticate()
   .then(() => {
