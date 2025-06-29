@@ -1,0 +1,47 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Template</title>
+    <style>
+      body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin:
+      0; padding: 0; } .email-container { max-width: 600px; margin: 20px auto;
+      background-color: #fcf8f8; padding: 20px; border: 1px solid #dddddd;
+      border-radius: 5px; } .header { text-align: center; padding-bottom: 20px;
+      border-bottom: 1px solid #1d1b1b; background-color: #5441b3; } .header
+      .logo { max-width: 150px; } .footer { text-align: center; padding-top:
+      20px; border-top: 1px solid #dddddd; font-size: 12px; color: #888888; }
+      .footer a { color: #ccc8c8; text-decoration: none; margin: 0 10px; }
+      .footer a:hover { text-decoration: underline; } .apps { text-align:
+      center; margin: 20px 0; } .apps img { max-width: 130px; margin: 0 5px; }
+      .contact-info { margin-top: 20px; padding: 10px; background-color:
+      #a6282a; color: #fff; text-align: center; border-radius: 5px; }
+      .contact-info p { margin: 5px 0; } .content { padding: 20px 0; } .content
+      h1 { color: #a6282a; } .content p { margin: 10px 0; } .content strong {
+      color: #cccee3; }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <img src="cid:ndbnlogo" alt="Ndnb Logo" class="logo" />
+      </div>
+      <div class="content">
+        <h1>Contact Form Submission</h1>
+        <p><strong>Name:</strong> {{fullname}}</p>
+        <p><strong>Description:</strong> {{description}}</p>
+        <p><strong>Email:</strong> {{email}}</p>
+      </div>
+      <div class="contact-info">
+        <p>Nepal Designers & Builders</p>
+        <p>Kalanki, Kathmandu Nepal</p>
+        <p>Phone: +977-1-xxxxxx / 97xxxxxxxx</p>
+        <p>Email: ndnb@gmail.com</p>
+      </div>
+      <div class="footer">
+        <p>Nepal Designers & Builders | &copy; Copyright 2024. All rights
+          reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
