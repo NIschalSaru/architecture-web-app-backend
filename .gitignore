@@ -17,4 +17,4 @@ build/
 # Custom storage folder
 storage/
 tmp/
-database/config/config.json
+database/config/

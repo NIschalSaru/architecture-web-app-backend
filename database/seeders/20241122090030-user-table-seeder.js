@@ -3,12 +3,12 @@ const bcrypt = require("bcryptjs");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const hashedPassword = await bcrypt.hash("admin@123", 10);
+    const hashedPassword = await bcrypt.hash("@Ndnb2025!Secure", 10);
     await queryInterface.bulkInsert("users", [
       {
-        fullName: "SuperAdmin",
-        email: "admin@gmail.com",
-        phoneNumber: "9800000000",
+        fullName: "superadmin",
+        email: "ndbofficials@gmail.com",
+        phoneNumber: "9851356590",
         password: hashedPassword,
         role: "admin",
         gender: "male",
