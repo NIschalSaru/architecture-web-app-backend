@@ -18,3 +18,4 @@ build/
 storage/
 tmp/
 database/config/
+services/allowedorigin.js
