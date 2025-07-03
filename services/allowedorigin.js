@@ -1,27 +1,9 @@
-// const allowOrigin = [
-//   {
-//     origin: [
-//       "http://localhost:3000",
-//       "https://nepaldesignersandbuilders.netlify.app",
-//       "https://nd-nb.netlify.app/",
-//       "https://ndnb-uat.netlify.app",
-//     ],
-//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//     preflightContinue: false,
-//     optionsSuccessStatus: 204,
-//   },
-// ];
-
-// module.exports = allowOrigin;
+require("dotenv").config();
 
 const allowOrigin = {
-  origins: [
-    "http://localhost:3000",
-    "https://nepaldesignersandbuilders.netlify.app",
-    "https://nd-nb.netlify.app",
-    "https://ndnb-uat.netlify.app",
-    "https://stg.ndnb.com.np",
-  ],
+  origins: process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
+    : [],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
   optionsSuccessStatus: 204,
