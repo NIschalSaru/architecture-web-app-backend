@@ -8,7 +8,7 @@ const {
 } = require("../controllers/clientForm.controller.js");
 const ProtectRoute = require("../middleware/protect.route.js");
 
-router.post("/", ProtectRoute, createClientForm);
+router.post("/", createClientForm);
 router.put("/:id", ProtectRoute, updateClientForm);
 router.delete("/:id", ProtectRoute, deleteClientForm);
 router.get("/", ProtectRoute, getAllClientForms);
