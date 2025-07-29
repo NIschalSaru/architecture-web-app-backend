@@ -14,7 +14,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
-app.use("/api/architecture-web-app/uploads", express.static("storage/uploads"));
+app.use(
+  "/api/architecture-web-app/uploads",
+  express.static("storage/uploads", {
+    setHeaders: (res, path) => {
+      res.setHeader("Cache-Control", "public, max-age=31536000");
+    },
+  })
+);
+
 app.use("/api/architecture-web-app", mainRoutes);
 
 app.get("/", (req, res) => {
