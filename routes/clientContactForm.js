@@ -6,7 +6,7 @@ const {
 } = require("../controllers/clientContactForm.controller.js");
 const ProtectRoute = require("../middleware/protect.route.js");
 
-router.post("/", ProtectRoute, createClientContactForm);
+router.post("/", createClientContactForm);
 router.delete("/:id", ProtectRoute, deleteClientContactForm);
 router.get("/", ProtectRoute, getAllClientContactForms);
 
