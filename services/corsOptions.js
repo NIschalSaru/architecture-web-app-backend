@@ -1,5 +1,5 @@
 const allowOrigin = require("./allowedorigin");
-const logger = require("./services/logger"); // import your Winston logger
+const logger = require("./logger"); // import your Winston logger
 
 const corsOptions = {
   origin: (origin, callback) => {
