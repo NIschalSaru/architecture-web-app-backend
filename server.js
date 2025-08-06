@@ -1,23 +1,57 @@
 const express = require("express");
-const { sequelizeInstance } = require("./database/databaseConnection.js");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
+const { sequelizeInstance } = require("./database/databaseConnection.js");
+const corsOptions = require("./services/corsOptions");
 const mainRoutes = require("./routes");
+const logger = require("./services/logger");
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
-const corsOptions = require("./services/corsOptions");
 
+app.use(helmet());
+
+app.use((req, res, next) => {
+  const start = Date.now();
+
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    logger.info({
+      method: req.method,
+      url: req.originalUrl,
+      status: res.statusCode,
+      ip: req.ip,
+      userAgent: req.headers["user-agent"],
+      responseTimeMs: duration,
+    });
+  });
+
+  res.on("error", (err) => {
+    logger.error({
+      message: "Response error",
+      method: req.method,
+      url: req.originalUrl,
+      error: err.message,
+      stack: err.stack,
+    });
+  });
+
+  next();
+});
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions));
 app.use(cookieParser());
 
+// Serve static uploads with cache headers
 app.use(
   "/api/architecture-web-app/uploads",
   express.static("storage/uploads", {
-    setHeaders: (res, path) => {
+    setHeaders: (res) => {
       res.setHeader("Cache-Control", "public, max-age=31536000");
     },
   })
@@ -32,20 +66,27 @@ app.get("/", (req, res) => {
 sequelizeInstance
   .authenticate()
   .then(() => {
-    console.log(
-      "Connection to the database has been established successfully."
-    );
+    logger.info("✅ Connected to the database successfully.");
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      logger.info(`🚀 Server is running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error("Unable to connect to the database:", err.message);
+    logger.error("❌ Database connection failed:", err.message);
     process.exit(1);
   });
+
 app.use((err, req, res, next) => {
-  console.error(err);
-  res
-    .status(500)
-    .json({ success: false, message: err.message || "Internal Server Error" });
+  logger.error({
+    message: err.message,
+    stack: err.stack,
+    url: req.originalUrl,
+    method: req.method,
+    ip: req.ip,
+  });
+
+  res.status(500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
 });
