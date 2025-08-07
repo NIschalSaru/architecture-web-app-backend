@@ -17,7 +17,8 @@ app.use(
   "/api/architecture-web-app/uploads",
   express.static("storage/uploads", {
     setHeaders: (res) => {
-      res.setHeader("Cache-Control", "public, max-age=31536000");
+      res.setHeader("Cache-Control", "no-store");
+      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
     },
   })
 );
