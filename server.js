@@ -12,6 +12,16 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Serve static uploads with cache headers
+app.use(
+  "/api/architecture-web-app/uploads",
+  express.static("storage/uploads", {
+    setHeaders: (res) => {
+      res.setHeader("Cache-Control", "public, max-age=31536000");
+    },
+  })
+);
+
 app.use(helmet());
 
 app.use((req, res, next) => {
@@ -46,16 +56,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// Serve static uploads with cache headers
-app.use(
-  "/api/architecture-web-app/uploads",
-  express.static("storage/uploads", {
-    setHeaders: (res) => {
-      res.setHeader("Cache-Control", "public, max-age=31536000");
-    },
-  })
-);
 
 app.use("/api/architecture-web-app", mainRoutes);
 
