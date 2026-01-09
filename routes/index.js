@@ -9,6 +9,7 @@ const clientFormRoutes = require("./clientForm.js");
 const trustedClient = require("./trustedClient.js");
 const byLaws = require("./byLaws.js");
 const clientContactForm = require("./clientContactForm.js");
+const teamMemberRoutes = require("./teamMember.js");
 
 router.use("/banner", bannerRoutes);
 router.use("/testimonial", testimonialRoutes);
@@ -19,5 +20,6 @@ router.use("/forms", clientFormRoutes);
 router.use("/our-clients", trustedClient);
 router.use("/by-laws", byLaws);
 router.use("/contact-us", clientContactForm);
+router.use("/team-members", teamMemberRoutes);
 
 module.exports = router;
