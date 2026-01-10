@@ -9,7 +9,7 @@ const MAX_SIZES = {
   gallery: 2 * 1024 * 1024,
   file: 10 * 1024 * 1024,
   documents: 10 * 1024 * 1024,
-  video: 50 * 1024 * 1024,
+  video: 20 * 1024 * 1024,
 };
 
 const allowedTypes = {
