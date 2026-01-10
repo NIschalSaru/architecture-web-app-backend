@@ -7,12 +7,12 @@ const {
   getAllTrustedClientsByFeature,
 } = require("../controllers/trustedClient.controller.js");
 const ProtectRoute = require("../middleware/protect.route.js");
-const { uploadImages } = require("../middleware/multer.middleware.js");
+const { uploadImages, validateFileSizes } = require("../middleware/multer.middleware.js");
 
-router.post("/", ProtectRoute, uploadImages, createTrustedClient);
+router.post("/", ProtectRoute, uploadImages, validateFileSizes, createTrustedClient);
 router.get("/", getAllTrustedClients);
 router.get("/feature", getAllTrustedClientsByFeature);
-router.put("/:id", ProtectRoute, uploadImages, updateTrustedClient);
+router.put("/:id", ProtectRoute, uploadImages, validateFileSizes, updateTrustedClient);
 router.delete("/:id", ProtectRoute, deleteTrustedClient);
 
 module.exports = router;

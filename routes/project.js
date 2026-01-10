@@ -20,7 +20,7 @@ const {
   getLatestProjects,
 } = require("../controllers/project/project.controller.js");
 const ProtectRoute = require("../middleware/protect.route.js");
-const { uploadImages } = require("../middleware/multer.middleware.js");
+const { uploadImages, validateFileSizes } = require("../middleware/multer.middleware.js");
 
 // Project Type Routes
 router.post("/project-types/", ProtectRoute, createProjectType);
@@ -30,8 +30,8 @@ router.put("/project-types/:id", ProtectRoute, updateProjectType);
 router.delete("/project-types/:id", ProtectRoute, deleteProjectType);
 
 // Project Routes
-router.post("/", ProtectRoute, uploadImages, createProject);
-router.put("/:id", ProtectRoute, uploadImages, updateProject);
+router.post("/", ProtectRoute, uploadImages, validateFileSizes, createProject);
+router.put("/:id", ProtectRoute, uploadImages, validateFileSizes, updateProject);
 router.delete("/:id", ProtectRoute, deleteProject);
 router.delete("/media/:id", ProtectRoute, deleteMediaById);
 router.get("/get-clients/:project_type_id", getClientByProjectTypeId);
