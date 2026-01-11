@@ -21,6 +21,13 @@ TeamMember.init(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    order: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: {
+        msg: "This order position is already occupied",
+      },
+    },
     filename: {
       type: DataTypes.STRING,
       allowNull: true,

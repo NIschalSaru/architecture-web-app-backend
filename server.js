@@ -7,6 +7,7 @@ const { sequelizeInstance } = require("./database/databaseConnection.js");
 const corsOptions = require("./services/corsOptions");
 const mainRoutes = require("./routes");
 const logger = require("./services/logger");
+const { globalLimiter } = require("./middleware/rateLimiter");
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,7 @@ app.use(
 );
 
 app.use(helmet());
+app.use(globalLimiter);
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -61,19 +63,19 @@ app.use(cookieParser());
 app.use("/api/architecture-web-app", mainRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Backend is running ✅");
+  res.send("Backend is running");
 });
 
 sequelizeInstance
   .authenticate()
   .then(() => {
-    logger.info("✅ Connected to the database successfully.");
+    logger.info("Connected to the database successfully.");
     app.listen(PORT, () => {
-      logger.info(`🚀 Server is running on port ${PORT}`);
+      logger.info(`Server is running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    logger.error("❌ Database connection failed:", err.message);
+    logger.error("Database connection failed:", err.message);
     process.exit(1);
   });
 

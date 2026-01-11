@@ -11,9 +11,10 @@ const {
 const router = express.Router();
 // const { uploadImages } = require("../middleware/multer.middleware.js");
 const ProtectRoute = require("../middleware/protect.route.js");
+const { authLimiter } = require("../middleware/rateLimiter.js");
 
 // router.post("/signup", signup);
-router.post("/login", login);
+router.post("/login", authLimiter, login);
 router.post("/logout", ProtectRoute, logout);
 // router.post("/forgot-password", forgotPassword);
 // router.post("/reset-password", resetPassword);
