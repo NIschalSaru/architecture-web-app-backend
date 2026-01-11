@@ -24,6 +24,11 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      order: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true,
+      },
       filename: {
         type: Sequelize.STRING,
         allowNull: true,
