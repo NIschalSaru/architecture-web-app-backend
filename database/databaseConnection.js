@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 let sequelizeInstance;
-if (process.env.NODE_ENV !== "production") {
+if (process.env.DATABASE_URI !== undefined) {
    sequelizeInstance = new Sequelize(process.env.DATABASE_URI, {
     dialect: "postgres",
     dialectOptions: {
