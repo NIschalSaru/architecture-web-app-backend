@@ -23,7 +23,7 @@ TeamMember.init(
     },
     order: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       unique: {
         msg: "This order position is already occupied",
       },
