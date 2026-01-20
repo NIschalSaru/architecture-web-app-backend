@@ -19,3 +19,4 @@ build/
 storage/
 tmp/
 database/config/
+database/seeders/
