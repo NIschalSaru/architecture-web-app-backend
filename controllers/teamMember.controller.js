@@ -65,7 +65,6 @@ const createTeamMember = asyncHandler(async (req, res) => {
   });
 });
 
-
 const updateTeamMember = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name, designation, contact_no, is_featured, order } = req.body;
@@ -157,7 +156,6 @@ const updateTeamMember = asyncHandler(async (req, res) => {
   });
 });
 
-
 const deleteTeamMember = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -179,6 +177,7 @@ const deleteTeamMember = asyncHandler(async (req, res) => {
     }
   }
 
+  await teamMember.update({ order: null });
   await teamMember.destroy();
 
   return res.status(200).json({
@@ -187,7 +186,6 @@ const deleteTeamMember = asyncHandler(async (req, res) => {
   });
 });
 
-
 const getAllTeamMembers = asyncHandler(async (req, res) => {
   const teamMembers = await TeamMember.findAll({
     order: [["order", "ASC"]],
@@ -195,7 +193,6 @@ const getAllTeamMembers = asyncHandler(async (req, res) => {
 
   return res.status(200).json({ success: true, data: teamMembers });
 });
-
 
 const getFeaturedTeamMembers = asyncHandler(async (req, res) => {
   const featuredMembers = await TeamMember.findAll({
