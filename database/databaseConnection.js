@@ -11,10 +11,8 @@ const poolConfig = {
 };
 
 let sequelizeInstance;
-const isDevelopment = process.env.NODE_ENV !== "production";
-
-if (isDevelopment) {
-  sequelizeInstance = new Sequelize(process.env.DATABASE_URI, {
+if (process.env.DATABASE_URI !== undefined && process.env.NODE_ENV !== "production") {
+   sequelizeInstance = new Sequelize(process.env.DATABASE_URI, {
     dialect: "postgres",
     dialectOptions: {
       ssl: {
