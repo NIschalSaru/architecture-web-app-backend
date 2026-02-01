@@ -14,7 +14,7 @@ const globalLimiter = rateLimit({
 
 // Strict rate limiter for authentication routes
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
+  windowMs: 10 * 60 * 1000, 
   max: 5, 
   message: {
     success: false,
