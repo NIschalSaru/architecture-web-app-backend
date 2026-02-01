@@ -20,12 +20,22 @@ const compressImages = async (req, res, next) => {
           const newFilename = `${parsedPath.name}.webp`;
           const newPath = path.join(parsedPath.dir, newFilename);
 
-          await sharp(originalPath)
+          // Read the file into a buffer first to avoid file locking issues on Windows
+          const imageBuffer = await fs.promises.readFile(originalPath);
+
+          // Process the buffer instead of the file path
+          await sharp(imageBuffer)
             .webp({ quality: 80 })
             .toFile(newPath);
 
-          // Remove the original file
-          fs.unlinkSync(originalPath);
+          // Now we can safely delete the original file since Sharp never locked it
+          try {
+            await fs.promises.unlink(originalPath);
+            console.log(`✓ Successfully deleted original file: ${path.basename(originalPath)}`);
+          } catch (unlinkError) {
+            console.error(`✗ Failed to delete original file ${originalPath}:`, unlinkError);
+            // Continue processing even if deletion fails
+          }
 
           // Update file object
           file.filename = newFilename;
