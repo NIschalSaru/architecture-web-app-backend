@@ -18,16 +18,16 @@ const resetPasswordOtp = async () => {
 };
 
 const generateAccessToken = async (userData, res) => {
-  const isProduction = process.env.NODE_ENV === "production";
+  const { getCookieConfig } = require("../config/cookieConfig");
+  
   const token = jwt.sign({ userData }, process.env.JWT_SECRET, {
     expiresIn: "4d",
   });
 
+  const cookieConfig = getCookieConfig();
   res.cookie("authToken", token, {
-    maxAge: 4 * 24 * 60 * 60 * 1000, 
-    httpOnly: true,
-    secure: isProduction,             
-    sameSite: "none", 
+    ...cookieConfig,
+    maxAge: 4 * 24 * 60 * 60 * 1000,
   });
 
   return token;

@@ -1,4 +1,5 @@
 const ProjectType = require("../../model/projectType.js");
+const Project = require("../../model/project.js");
 const { asyncHandler } = require("../../services/async.handler.js");
 
 const createProjectType = asyncHandler(async (req, res) => {
@@ -31,11 +32,34 @@ const getAllProjectTypes = asyncHandler(async (req, res) => {
   }
 });
 
+// const getProjectTypesByStatus = asyncHandler(async (req, res) => {
+//   try {
+//     const projectTypes = await ProjectType.findAll({
+//       attributes: ["id", "title", "status"],
+//       where: { status: true },
+//       order: [["createdAt", "DESC"]],
+//     });
+
+//     res.status(200).json({ success: true, data: projectTypes });
+//   } catch (error) {
+//     console.error("Error fetching Data:", error);
+//     res.status(500).json({ success: false, message: "Internal Server Error" });
+//   }
+// });
+
 const getProjectTypesByStatus = asyncHandler(async (req, res) => {
   try {
     const projectTypes = await ProjectType.findAll({
       attributes: ["id", "title", "status"],
       where: { status: true },
+      include: [
+        {
+          model: Project,
+          as: "projects",
+          attributes: [],
+          required: true,
+        },
+      ],
       order: [["createdAt", "DESC"]],
     });
 
