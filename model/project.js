@@ -51,6 +51,11 @@ Project.associate = (models) => {
     foreignKey: "project_id",
     as: "media",
   });
+
+  Project.hasMany(models.ProjectVideo, {
+    foreignKey: "project_id",
+    as: "videos", 
+  });
 };
 
 module.exports = Project;

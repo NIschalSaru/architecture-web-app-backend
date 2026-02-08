@@ -18,6 +18,7 @@ const {
   getAllProjects,
   getAllClients,
   getLatestProjects,
+  deleteProjectVideo
 } = require("../controllers/project/project.controller.js");
 const ProtectRoute = require("../middleware/protect.route.js");
 const { uploadImages, validateFileSizes } = require("../middleware/multer.middleware.js");
@@ -41,5 +42,6 @@ router.get("/get-project-by-id/:id", getProjectById);
 router.get("/get-projects", getAllProjects);
 router.get("/get-clients", getAllClients);
 router.get("/get-latest-projects", getLatestProjects);
+router.delete("/project-video/:id", ProtectRoute, deleteProjectVideo);
 
 module.exports = router;

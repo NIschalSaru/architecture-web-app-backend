@@ -16,6 +16,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        unique: true,
+      },
       contact_no: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -43,9 +48,13 @@ module.exports = {
       },
       createdAt: {
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.fn("NOW"),
       },
       deletedAt: {
         type: Sequelize.DATE,

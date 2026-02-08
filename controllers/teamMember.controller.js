@@ -5,7 +5,7 @@ const TeamMember = require("../model/teamMember.js");
 const { asyncHandler } = require("../services/async.handler.js");
 
 const createTeamMember = asyncHandler(async (req, res) => {
-  const { name, designation, contact_no, is_featured, order } = req.body;
+  const { name, designation, contact_no, is_featured, order, email } = req.body;
 
   if (!name || !designation) {
     return res
@@ -42,6 +42,7 @@ const createTeamMember = asyncHandler(async (req, res) => {
   const data = await TeamMember.create({
     name,
     designation,
+    email,
     contact_no,
     is_featured: is_featured,
     order: parseInt(order),
@@ -56,6 +57,7 @@ const createTeamMember = asyncHandler(async (req, res) => {
       id: data.id,
       name: data.name,
       designation: data.designation,
+      email: data.email,
       contact_no: data.contact_no,
       is_featured: data.is_featured,
       order: data.order,
@@ -67,7 +69,7 @@ const createTeamMember = asyncHandler(async (req, res) => {
 
 const updateTeamMember = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { name, designation, contact_no, is_featured, order } = req.body;
+  const { name, designation, contact_no, is_featured, order, email } = req.body;
 
   const teamMember = await TeamMember.findByPk(id);
   if (!teamMember) {
@@ -94,9 +96,10 @@ const updateTeamMember = asyncHandler(async (req, res) => {
       });
 
       if (existingOrder) {
-        return res
-          .status(400)
-          .json({ success: false, message: "This order position is already occupied" });
+        return res.status(400).json({
+          success: false,
+          message: "This order position is already occupied",
+        });
       }
     }
 
@@ -132,6 +135,7 @@ const updateTeamMember = asyncHandler(async (req, res) => {
   await teamMember.update({
     name: name ?? teamMember.name,
     designation: designation ?? teamMember.designation,
+    email: email ?? teamMember.email,
     contact_no: contact_no ?? teamMember.contact_no,
     is_featured: is_featured ?? teamMember.is_featured,
     order: finalOrder,
@@ -147,6 +151,7 @@ const updateTeamMember = asyncHandler(async (req, res) => {
       id: teamMember.id,
       name: teamMember.name,
       designation: teamMember.designation,
+      email: teamMember.email,
       contact_no: teamMember.contact_no,
       is_featured: teamMember.is_featured,
       order: teamMember.order,
