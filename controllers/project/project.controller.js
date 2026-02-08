@@ -375,7 +375,7 @@ const getProjectByClientId = asyncHandler(async (req, res) => {
     include: [{
         model: Project,
         as: "project",
-        include: [{model: Media,as: "media"},{model: ProjectVideo,as: "video"}],
+        include: [{model: Media,as: "media"},{model: ProjectVideo,as: "videos"}],
         },
       ],
   });
@@ -444,7 +444,7 @@ const getProjectById = asyncHandler(async (req, res) => {
     include: [
       { model: Client, as: "client" },
       { model: Media, as: "media" },
-      { model: ProjectVideo,as: "videos"},
+      { model: ProjectVideo, as: "videos"},
     ],
   });
 
