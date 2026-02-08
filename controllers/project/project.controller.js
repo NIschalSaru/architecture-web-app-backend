@@ -64,16 +64,13 @@ const createProject = asyncHandler(async (req, res) => {
     if (video_url) {
       let urls;
       
-      // Check if video_url is a JSON string and parse it
       if (typeof video_url === 'string' && video_url.trim().startsWith('[')) {
         try {
           urls = JSON.parse(video_url);
         } catch (e) {
-          // If parsing fails, treat it as a single URL
           urls = [video_url];
         }
       } else {
-        // Handle normal array or single string
         urls = Array.isArray(video_url) ? video_url : [video_url];
       }
       
@@ -211,17 +208,13 @@ const updateProject = asyncHandler(async (req, res) => {
     // Handle both string and array formats for video_url
     if (video_url) {
       let urls;
-      
-      // Check if video_url is a JSON string and parse it
       if (typeof video_url === 'string' && video_url.trim().startsWith('[')) {
         try {
           urls = JSON.parse(video_url);
         } catch (e) {
-          // If parsing fails, treat it as a single URL
           urls = [video_url];
         }
       } else {
-        // Handle normal array or single string
         urls = Array.isArray(video_url) ? video_url : [video_url];
       }
       
