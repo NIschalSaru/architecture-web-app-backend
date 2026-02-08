@@ -17,6 +17,18 @@ TeamMember.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: {
+        msg: "This email is already in use",
+      },
+      validate: {
+        isEmail: {
+          msg: "Please provide a valid email address",
+        },
+      },
+    },
     is_featured: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
