@@ -202,7 +202,7 @@ const getAllTeamMembers = asyncHandler(async (req, res) => {
 const getFeaturedTeamMembers = asyncHandler(async (req, res) => {
   const featuredMembers = await TeamMember.findAll({
     where: { is_featured: true },
-    attributes: { exclude: ["id", "contact_no"] },
+    attributes: { exclude: ["id"] },
     order: [["order", "ASC"]],
   });
 
