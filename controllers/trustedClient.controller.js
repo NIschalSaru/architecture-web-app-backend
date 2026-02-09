@@ -20,7 +20,7 @@ const createTrustedClient = asyncHandler(async (req, res) => {
     const folderName = dayjs().format("YYYYMMDD");
     filename = uploadedImage.filename;
     filepath = `/uploads/${folderName}/${filename}`;
-    fileurl = null; // ✅ Explicitly set to null
+    fileurl = null; 
   }
 
   const client = await TrustedClient.create({
