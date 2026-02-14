@@ -1,4 +1,4 @@
-const { Client, Project, Media } = require("../../model/index.js");
+const { Client, Project, Media, ProjectVideo } = require("../../model/index.js");
 const { asyncHandler } = require("../../services/async.handler.js");
 const path = require("path");
 const dayjs = require("dayjs");
@@ -16,9 +16,11 @@ const createProject = asyncHandler(async (req, res) => {
     client_email,
     client_mobile,
     client_address,
+    video_url,
     status,
   } = req.body;
 
+  console.log(req.body);
   if (!name || !project_type_id) {
     return res.status(400).json({
       success: false,
@@ -57,6 +59,35 @@ const createProject = asyncHandler(async (req, res) => {
       );
     }
 
+    let videoData = [];
+    // Handle both string and array formats for video_url
+    if (video_url) {
+      let urls;
+      
+      if (typeof video_url === 'string' && video_url.trim().startsWith('[')) {
+        try {
+          urls = JSON.parse(video_url);
+        } catch (e) {
+          urls = [video_url];
+        }
+      } else {
+        urls = Array.isArray(video_url) ? video_url : [video_url];
+      }
+      
+      if (urls.length > 0 && urls[0]) {
+        for (const url of urls) {
+          const videoRecord = await ProjectVideo.create(
+            {
+              project_id: project.id,
+              video_url: url,
+            },
+            { transaction: t }
+          );
+          videoData.push(videoRecord);
+        }
+      }
+    }
+
     const files = req.files;
     const folderName = dayjs().format("YYYYMMDD");
     const uploadFolder = `/uploads/${folderName}`;
@@ -92,7 +123,7 @@ const createProject = asyncHandler(async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Project created successfully.",
-      data: { project, client, media: mediaData },
+      data: { project, client, media: mediaData, videos_url: videoData },
     });
   } catch (error) {
     await t.rollback();
@@ -117,6 +148,7 @@ const updateProject = asyncHandler(async (req, res) => {
     client_mobile,
     client_address,
     status,
+    video_url,
   } = req.body;
 
   const t = await sequelize.transaction();
@@ -172,6 +204,34 @@ const updateProject = asyncHandler(async (req, res) => {
       }
     }
 
+    let videoData = [];
+    // Handle both string and array formats for video_url
+    if (video_url) {
+      let urls;
+      if (typeof video_url === 'string' && video_url.trim().startsWith('[')) {
+        try {
+          urls = JSON.parse(video_url);
+        } catch (e) {
+          urls = [video_url];
+        }
+      } else {
+        urls = Array.isArray(video_url) ? video_url : [video_url];
+      }
+      
+      if (urls.length > 0 && urls[0]) {
+        for (const url of urls) {
+          const videoRecord = await ProjectVideo.create(
+            {
+              project_id: id,
+              video_url: url,
+            },
+            { transaction: t }
+          );
+          videoData.push(videoRecord);
+        }
+      }
+    }
+
     const files = req.files;
     const folderName = dayjs().format("YYYYMMDD");
     const uploadFolder = `/uploads/${folderName}`;
@@ -221,7 +281,7 @@ const updateProject = asyncHandler(async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Data updated successfully.",
-      data: { project, client, media: mediaRecords },
+      data: { project, client, media: mediaRecords, videos_url: videoData },
     });
   } catch (error) {
     await t.rollback();
@@ -264,6 +324,7 @@ const deleteProject = asyncHandler(async (req, res) => {
 
   await Media.destroy({ where: { project_id: id } });
   await Client.destroy({ where: { project_id: id } });
+  await ProjectVideo.destroy({ where: { project_id: id } });
   await project.destroy();
 
   res
@@ -311,13 +372,12 @@ const getClientByProjectTypeId = asyncHandler(async (req, res) => {
 const getProjectByClientId = asyncHandler(async (req, res) => {
   const { client_id } = req.params;
   const client = await Client.findByPk(client_id, {
-    include: [
-      {
+    include: [{
         model: Project,
         as: "project",
-        include: [{ model: Media, as: "media" }],
-      },
-    ],
+        include: [{model: Media,as: "media"},{model: ProjectVideo,as: "videos"}],
+        },
+      ],
   });
 
   if (!client) {
@@ -384,6 +444,7 @@ const getProjectById = asyncHandler(async (req, res) => {
     include: [
       { model: Client, as: "client" },
       { model: Media, as: "media" },
+      { model: ProjectVideo, as: "videos"},
     ],
   });
 
@@ -406,6 +467,7 @@ const getAllProjects = asyncHandler(async (req, res) => {
     include: [
       { model: Client, as: "client" },
       { model: Media, as: "media" },
+      { model: ProjectVideo,as: "videos"},
     ],
   });
 
@@ -465,6 +527,25 @@ const getLatestProjects = asyncHandler(async (req, res) => {
   });
 });
 
+const deleteProjectVideo = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const video = await ProjectVideo.findByPk(id);
+  if (!video) {
+    return res.status(404).json({
+      success: false,
+      message: "Project video not found.",
+    });
+  }
+
+  await video.destroy();
+
+  return res.status(200).json({
+    success: true,
+    message: "Project video deleted successfully.",
+  });
+});
+
 module.exports = {
   createProject,
   updateProject,
@@ -476,4 +557,5 @@ module.exports = {
   getAllProjects,
   getAllClients,
   getLatestProjects,
+  deleteProjectVideo,
 };

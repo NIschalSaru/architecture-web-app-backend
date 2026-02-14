@@ -15,38 +15,6 @@ const path = require("path");
 const dayjs = require("dayjs");
 const { log } = require("console");
 
-// const signup = asyncHandler(async (req, res) => {
-//   const validator = new SignupValidator(req);
-//   const errors = await validator.validate();
-//   if (errors.length > 0) {
-//     return res.status(400).json({ errors });
-//   }
-//   const { fullName, phoneNumber, password, gender, email, role } = req.body;
-//   const hashedPassword = await hashPassword(password);
-//   const boyProfilePic = `https://avatar.iran.liara.run/public/boy?userName=${phoneNumber}`;
-//   const girlProfilePic = `https://avatar.iran.liara.run/public/girl?userName=${phoneNumber}`;
-//   const newUser = await User.create({
-//     fullName,
-//     phoneNumber,
-//     password: hashedPassword,
-//     gender,
-//     role,
-//     email,
-//     filename: null,
-//     filepath: gender === "male" ? boyProfilePic : girlProfilePic,
-//   });
-//   const payload = { id: newUser.id, email: newUser.email };
-//   const token = await generateAccessToken(payload, res);
-//   res.status(201).json({
-//     id: newUser.id,
-//     fullName: newUser.fullName,
-//     email: newUser.email,
-//     filepath: newUser.filepath,
-//     token,
-//     message: "User created successfully",
-//   });
-// });
-
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
@@ -272,7 +240,6 @@ const updateEmailAndPassword = asyncHandler(async (req, res) => {
 // });
 
 module.exports = {
-  // signup,
   login,
   logout,
   // forgotPassword,
